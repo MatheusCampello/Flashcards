@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { KeyboardAvoidingView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { NavigationActions } from 'react-navigation'
 import { black, white } from '../../utils/colors';
 import { saveDeckTitle } from '../../utils/api';
 
@@ -12,7 +13,8 @@ export default class NewDeck extends Component {
   }
   submitDeck = () => {
     const { deckTitle } = this.state;
-    saveDeckTitle(deckTitle);
+    // saveDeckTitle(deckTitle);
+    this.props.navigation.dispatch(NavigationActions.back({key: 'DeckList'}))
   }
 
   render () {

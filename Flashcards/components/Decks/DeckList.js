@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { getDecks } from '../../utils/api';
+import DeckInfoCard from './DeckInfoCard';
 
 export default class DeckList extends Component {
   constructor(props) {
@@ -10,11 +11,17 @@ export default class DeckList extends Component {
     };
   }
 
+  _keyExtractor = (item, index) => item.title;
+
   componentDidMount () {
     getDecks()
       .then((decks) => this.setState({
-        deckList: decks
+        deckList: JSON.parse(decks)
       }));
+  }
+
+  renderItem = ({ item }) => {
+    return <DeckInfoCard deck={item} />
   }
 
   render () {
@@ -22,10 +29,13 @@ export default class DeckList extends Component {
     return(
       <View>
         {deckList.length > 0 ?
-          <Text> a {deckList} </Text>
-          : <Text> b {deckList} </Text>
+          <FlatList
+            data={deckList}
+            renderItem={this.renderItem}
+            keyExtractor={this._keyExtractor}
+          />
+          : <Text> No Decks yet </Text>
         }
-        <Text>Deck List</Text>
       </View>
     )
   }

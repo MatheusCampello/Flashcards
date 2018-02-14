@@ -2,8 +2,8 @@ import { AsyncStorage } from 'react-native'
 
 export function getDecks() {
   // return AsyncStorage.getAllKeys()
-  const data = {
-    React: {
+  const data = [
+    {
       title: 'React',
       questions: [
         {
@@ -12,7 +12,7 @@ export function getDecks() {
         }
       ]
     },
-    JavaScript: {
+    {
       title: 'JavaScript',
       questions: [
         {
@@ -21,10 +21,11 @@ export function getDecks() {
         }
       ]
     }
-  }
+  ]
   // const newDeck = { title: 'React', questions: []};
   // return AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data))
   return AsyncStorage.getItem('Flashcards:deck')
+  // return AsyncStorage.clear();
   // return AsyncStorage.getAllKeys((err, keys) => {
   //   AsyncStorage.multiGet(keys, (err, decks) => {
   //     decks.map((result, i, deck) => {
@@ -57,19 +58,19 @@ export function getDecks() {
 }
 
 export function getDeck(title) {
-  return AsyncStorage.getItem(title)
+  return AsyncStorage.getItem('Flashcards:deck')
 }
 
 export function saveDeckTitle (title) {
   const newDeck = { title: title, questions: []};
-  return AsyncStorage.setItem(title, JSON.stringify(newDeck));
+  return AsyncStorage.setItem('Flashcards:deck', JSON.stringify(newDeck));
 }
 
 export function addCardToDeck (title, card) {
-  return AsyncStorage.getItem(title)
+  return AsyncStorage.getItem('Flashcards:deck')
     .then((result) => {
       const data = JSON.parse(result);
       data['questions'].push(card);
-      AsyncStorage.setItem(title, JSON.stringify(data));
+      AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data));
     });
 }
