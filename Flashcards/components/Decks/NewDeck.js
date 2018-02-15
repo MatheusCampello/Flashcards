@@ -14,7 +14,7 @@ export default class NewDeck extends Component {
   submitDeck = () => {
     const { deckTitle } = this.state;
     // saveDeckTitle(deckTitle);
-    this.props.navigation.dispatch(NavigationActions.back({key: 'DeckList'}))
+    this.props.navigation.navigate('DeckList')
   }
 
   render () {
