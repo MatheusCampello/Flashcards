@@ -1,5 +1,7 @@
 import { AsyncStorage } from 'react-native'
 
+export const flashcards = 'Flashcards:deck'
+
 export function getDecks() {
   // return AsyncStorage.getAllKeys()
   const data = [
@@ -24,7 +26,7 @@ export function getDecks() {
   ]
   // const newDeck = { title: 'React', questions: []};
   // return AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data))
-  return AsyncStorage.getItem('Flashcards:deck')
+  return AsyncStorage.getItem(flashcards)
   // return AsyncStorage.clear();
   // return AsyncStorage.getAllKeys((err, keys) => {
   //   AsyncStorage.multiGet(keys, (err, decks) => {
@@ -61,9 +63,16 @@ export function getDeck(title) {
   return AsyncStorage.getItem('Flashcards:deck')
 }
 
-export function saveDeckTitle (title) {
+export function saveDeckTitle (title) {4
   const newDeck = { title: title, questions: []};
-  return AsyncStorage.setItem('Flashcards:deck', JSON.stringify(newDeck));
+  return AsyncStorage.getItem(flashcards)
+    .then((results) => {
+      let data = JSON.parse(results);
+      if (data.find(el => {return el.title === title}) === undefined) {
+        data.push(newDeck)
+        AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data))
+      }
+    });
 }
 
 export function addCardToDeck (title, card) {

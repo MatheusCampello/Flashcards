@@ -13,7 +13,7 @@ export default class NewDeck extends Component {
   }
   submitDeck = () => {
     const { deckTitle } = this.state;
-    // saveDeckTitle(deckTitle);
+    saveDeckTitle(deckTitle);
     this.props.navigation.navigate('DeckList')
   }
 
@@ -23,7 +23,7 @@ export default class NewDeck extends Component {
         <Text style={styles.text}>What is the title of your new Deck?</Text>
         <TextInput
           style={{borderColor: black, borderWidth: 1, width: '70%', borderRadius: 5}}
-          onChangeText={(text) => this.setState({text})}
+          onChangeText={(deckTitle) => this.setState({deckTitle})}
           value={this.state.text}
           placeholder='Deck Title'
         />
