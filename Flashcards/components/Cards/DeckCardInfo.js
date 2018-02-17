@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { black, gray } from '../../utils/colors';
+import { black, white, gray } from '../../utils/colors';
 
 export default class DeckCardInfo extends Component {
   static navigationOptions = ({ navigation }) => {
     const { deck } = navigation.state.params
-
     return {
       title: deck.title
     }
@@ -15,6 +14,14 @@ export default class DeckCardInfo extends Component {
     return nextProps.deck !== null
   }
 
+  navigateNewCard(navigation) {
+    const { deck } = navigation.state.params
+    navigation.navigate(
+      'NewCard',
+      { deckTitle: deck.title}
+    )
+  }
+
   render() {
     const { deck } = this.props.navigation.state.params
     return (
@@ -22,12 +29,15 @@ export default class DeckCardInfo extends Component {
         {deck &&
           <View>
             <Text style={styles.mainText}> {deck.title} </Text>
-            <Text style={styles.subText}> {deck.questions.length} cards </Text>
-            <TouchableOpacity>
-              <Text>Add Card</Text>
+            {deck.questions.length > 0
+              ? <Text style={styles.subText}> {deck.questions.length} {deck.questions.length === 1 ? 'card' : 'cards'} </Text>
+              : <Text style={styles.subText}> No Cards Yet </Text>
+            }
+            <TouchableOpacity style={styles.buttonAdd} onPress={() => this.navigateNewCard(this.props.navigation)}>
+              <Text style={{color: black, alignSelf: 'center'}}>Add Card</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Text>Start Quiz</Text>
+            <TouchableOpacity style={styles.buttonQuiz}>
+              <Text style={{color: white, alignSelf: 'center'}}>Start Quiz</Text>
             </TouchableOpacity>
           </View>
         }
@@ -48,21 +58,44 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: black,
     alignSelf: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   mainText: {
     color: black,
-    fontSize: 18,
+    fontSize: 38,
     fontWeight: 'bold',
     textAlign: 'center',
     paddingTop: 10,
   },
   subText: {
     color: gray,
-    fontSize: 14,
+    fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     paddingBottom: 10,
-  }
+  },
+  buttonAdd: {
+    justifyContent: 'flex-end',
+    marginTop: '50%',
+    padding: 10,
+    backgroundColor: white,
+    alignSelf: 'center',
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: black,
+    width: 130,
+    height: 40,
+  },
+  buttonQuiz: {
+    justifyContent: 'flex-end',
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: black,
+    alignSelf: 'center',
+    borderRadius: 4,
+    borderWidth: 0.5,
+    width: 130,
+    height: 40,
+  },
 })

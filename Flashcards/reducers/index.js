@@ -1,20 +1,15 @@
-import { RECEIVE_ENTRIES, ADD_ENTRY } from '../actions'
+import { LOAD_DECKS_SUCCESS, ADD_DECK_SUCCESS } from '../actions'
+import initialState from './initialState';
 
-function entries (state = {}, action) {
+function deckList (state = initialState.decks, action) {
   switch (action.type) {
-    case RECEIVE_ENTRIES :
-      return {
-        ...state,
-        ...action.entries,
-      }
-    case ADD_ENTRY :
-      return {
-        ...state,
-        ...action.entry
-      }
+    case LOAD_DECKS_SUCCESS :
+      return [...action.decks];
+    case ADD_DECK_SUCCESS :
+      return [...state, action.deck];
     default :
       return state
   }
 }
 
-export default entries
+export default deckList

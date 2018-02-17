@@ -1,16 +1,37 @@
-export const RECEIVE_ENTRIES = 'RECEIVE_ENTRIES'
-export const ADD_ENTRY = 'ADD_ENTRY'
+import { getDecks, saveDeckTitle } from '../utils/api';
 
-export function receiveEntries (entries) {
+export const LOAD_DECKS_SUCCESS = 'LOAD_DECKS_SUCCESS'
+export const ADD_DECK_SUCCESS = 'ADD_DECK_SUCCESS'
+export const LOAD_DECK_SUCCESS = 'LOAD_DECK_SUCCESS'
+export const ADD_CARD_SUCCESS = 'ADD_CARD_SUCCESS'
+
+export function loadDecksSuccess (decks) {
   return {
-    type: RECEIVE_ENTRIES,
-    entries,
+    type: LOAD_DECKS_SUCCESS,
+    decks,
   }
 }
 
-export function addEntry (entry) {
+// export function addDeckSuccess (deck) {
+//   return {
+//     type: ADD_DECK_SUCCESS,
+//     deck,
+//   }
+// }
+
+export function loadDecks() {
+  return dispatch => {
+    getDecks()
+      .then(decks => {
+        const de = JSON.parse(decks)
+        dispatch(loadDecksSuccess(de))
+      })
+  }
+}
+
+export function addDeck (deck) {
   return {
-    type: ADD_ENTRY,
-    entry,
+    type: ADD_DECK_SUCCESS,
+    deck,
   }
 }

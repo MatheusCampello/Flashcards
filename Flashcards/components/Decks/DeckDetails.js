@@ -11,7 +11,10 @@ export default function DeckDetails ({ deck, navigation, style = {} }) {
         { deck: deck }
       )}>
       <Text style={styles.mainText}> {deck.title} </Text>
-      <Text style={styles.subText}> {deck.questions.length} cards </Text>
+      {deck.questions.length > 0
+        ? <Text style={styles.subText}> {deck.questions.length} {deck.questions.length === 1 ? 'card' : 'cards'} </Text>
+        : <Text style={styles.subText}> No Cards Yet </Text>
+      }
     </TouchableOpacity>
   );
 }

@@ -4,9 +4,13 @@ import { Provider } from 'react-redux';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { white, black } from './utils/colors';
 import { Constants } from 'expo'
+import { createStore } from 'redux';
+import reducer from './reducers';
+import configureStore from './store/configureStore';
 import DeckList from './components/Decks/DeckList';
 import NewDeck from './components/Decks/NewDeck';
 import DeckCardInfo from './components/Cards/DeckCardInfo';
+import NewCard from './components/Cards/NewCard';
 
 function FlashcardsStatusBar ({ backgroundColor, ...props}) {
   return (
@@ -61,16 +65,29 @@ const MainNavigator = StackNavigator({
         backgroundColor: black,
       }
     }
+  },
+  NewCard: {
+    screen: NewCard,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: black,
+      }
+    }
   }
 })
+
+const store = configureStore();
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{flex: 1}}>
-        <FlashcardsStatusBar backgroundColor={white} barStyle='light-content'/>
-        <MainNavigator />
-      </View>
+      <Provider store={store}>
+        <View style={{flex: 1}}>
+          <FlashcardsStatusBar backgroundColor={white} barStyle='light-content'/>
+          <MainNavigator />
+        </View>
+      </Provider>
     );
   }
 }
