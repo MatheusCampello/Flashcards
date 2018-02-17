@@ -2,9 +2,14 @@ import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { black, gray } from '../../utils/colors';
 
-export default function DeckInfoCard ({ deck, onPress, style = {} }) {
+export default function DeckDetails ({ deck, navigation, style = {} }) {
   return (
-    <TouchableOpacity style={styles.infoCard} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.infoCard}
+      onPress={() => navigation.navigate(
+        'DeckCardInfo',
+        { deck: deck }
+      )}>
       <Text style={styles.mainText}> {deck.title} </Text>
       <Text style={styles.subText}> {deck.questions.length} cards </Text>
     </TouchableOpacity>

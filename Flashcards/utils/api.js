@@ -28,34 +28,6 @@ export function getDecks() {
   // return AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data))
   return AsyncStorage.getItem(flashcards)
   // return AsyncStorage.clear();
-  // return AsyncStorage.getAllKeys((err, keys) => {
-  //   AsyncStorage.multiGet(keys, (err, decks) => {
-  //     decks.map((result, i, deck) => {
-  //       let key = deck[i][0]
-  //       let value = deck[i][1]
-  //     });
-  //   });
-  // });
-  // let deckList = []
-  // const keys = AsyncStorage.getAllKeys()
-  // AsyncStorage.getAllKeys((err, keys) => {
-  //   keys.forEach((key) => {
-  //     const data = AsyncStorage.getItem(key);
-  //     deckList.push(data);
-  //   });
-  // });
-  // return deckList
-  // const data = {
-  //   JavaScript: {
-  //     title: 'JavaScript',
-  //     questions: [
-  //       {
-  //         question: 'What is a closure?',
-  //         answer: 'The combination of a function and the lexical environment within which that function was declared.'
-  //       }
-  //     ]
-  //   }
-  // }
 
 }
 
@@ -63,12 +35,11 @@ export function getDeck(title) {
   return AsyncStorage.getItem('Flashcards:deck')
 }
 
-export function saveDeckTitle (title) {4
-  const newDeck = { title: title, questions: []};
+export function saveDeckTitle (newDeck) {
   return AsyncStorage.getItem(flashcards)
     .then((results) => {
       let data = JSON.parse(results);
-      if (data.find(el => {return el.title === title}) === undefined) {
+      if (data.find(el => {return el.title === newDeck.title}) === undefined) {
         data.push(newDeck)
         AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data))
       }

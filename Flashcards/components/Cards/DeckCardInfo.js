@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { black, gray } from '../../utils/colors';
 
 export default class DeckCardInfo extends Component {
+  static navigationOptions = ({ navigation }) => {
+    const { deck } = navigation.state.params
+
+    return {
+      title: deck.title
+    }
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return nextProps.deck !== null
+  }
 
   render() {
+    const { deck } = this.props.navigation.state.params
     return (
       <View style={styles.infoCard}>
-        <Text style={styles.mainText}> {deck.title} </Text>
-        <Text style={styles.subText}> {deck.questions.length} cards </Text>
-        <TouchableOpacity>
-          <Text>Add Card</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>Start Quiz</Text>
-        </TouchableOpacity>
+        {deck &&
+          <View>
+            <Text style={styles.mainText}> {deck.title} </Text>
+            <Text style={styles.subText}> {deck.questions.length} cards </Text>
+            <TouchableOpacity>
+              <Text>Add Card</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text>Start Quiz</Text>
+            </TouchableOpacity>
+          </View>
+        }
       </View>
     );
   }

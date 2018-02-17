@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Platform, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 import { white, black } from './utils/colors';
 import { Constants } from 'expo'
 import DeckList from './components/Decks/DeckList';
 import NewDeck from './components/Decks/NewDeck';
+import DeckCardInfo from './components/Cards/DeckCardInfo';
 
 function FlashcardsStatusBar ({ backgroundColor, ...props}) {
   return (
@@ -48,12 +49,27 @@ const Tabs = TabNavigator({
   }
 })
 
+const MainNavigator = StackNavigator({
+  Home: {
+    screen: Tabs,
+  },
+  DeckCardInfo: {
+    screen: DeckCardInfo,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: black,
+      }
+    }
+  }
+})
+
 export default class App extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
         <FlashcardsStatusBar backgroundColor={white} barStyle='light-content'/>
-        <Tabs />
+        <MainNavigator />
       </View>
     );
   }

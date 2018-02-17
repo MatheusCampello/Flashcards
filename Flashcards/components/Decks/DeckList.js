@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { getDecks } from '../../utils/api';
-import DeckInfoCard from './DeckInfoCard';
+import DeckDetails from './DeckDetails';
 
 export default class DeckList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      deckList: []
+      deckList: [] //Use Redux
     };
   }
 
@@ -20,8 +20,15 @@ export default class DeckList extends Component {
       }));
   }
 
+  openDeck = (item) => {
+    this.props.navigation.navigate(
+      'DeckCardInfo',
+      { deck: item }
+    );
+  }
+
   renderItem = ({ item }) => {
-    return <DeckInfoCard deck={item} />
+    return <DeckDetails deck={item} navigation={this.props.navigation} />
   }
 
   render () {

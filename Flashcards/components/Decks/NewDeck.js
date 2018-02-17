@@ -13,8 +13,18 @@ export default class NewDeck extends Component {
   }
   submitDeck = () => {
     const { deckTitle } = this.state;
-    saveDeckTitle(deckTitle);
-    this.props.navigation.navigate('DeckList')
+    const newDeck = {
+      title: deckTitle,
+      questions: []
+    };
+    //update redux
+    saveDeckTitle(newDeck)
+      .then(() => {
+        this.props.navigation.navigate(
+          'DeckCardInfo',
+          { deck: newDeck }
+        );
+      });
   }
 
   render () {
