@@ -17,31 +17,28 @@ export class DeckList extends Component {
 
   componentDidMount () {
     const { dispatch } = this.props
-    // getDecks()
-    //   .then((decks) => this.setState({
-    //     deckList: JSON.parse(decks)
-    //   }));
     dispatch(loadDecks());
   }
 
   openDeck = (item) => {
-    this.props.navigation.navigate(
+    const { navigation } = this.props
+    navigation.navigate(
       'DeckCardInfo',
       { deck: item }
     );
   }
 
   renderItem = ({ item }) => {
-    return <DeckDetails deck={item} navigation={this.props.navigation} />
+    // return <DeckDetails deck={item} navigation={this.props.navigation} />
+    return <DeckDetails deck={item} onPress={this.openDeck} />
   }
 
   render () {
-    const { deckList } = this.props;
     return(
       <View>
         {this.props.deckList && this.props.deckList.length > 0 ?
           <FlatList
-            data={deckList}
+            data={this.props.deckList}
             renderItem={this.renderItem}
             keyExtractor={this._keyExtractor}
           />

@@ -35,3 +35,11 @@ export function addDeck (deck) {
     deck,
   }
 }
+
+export function addCard (deckTitle, card) {
+  return {
+    type: ADD_CARD_SUCCESS,
+    deckTitle,
+    card,
+  }
+}

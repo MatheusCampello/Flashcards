@@ -46,11 +46,18 @@ export function saveDeckTitle (newDeck) {
     });
 }
 
-export function addCardToDeck (title, card) {
+export function addCardToDeck (deckTitle, card) {
   return AsyncStorage.getItem('Flashcards:deck')
     .then((result) => {
-      const data = JSON.parse(result);
-      data['questions'].push(card);
+      let data = JSON.parse(result);
+      data.map(deck => {
+        if(deck.title === deckTitle) {
+          deck.questions.push(card)
+          return {...deck}
+        } else {
+          return deck
+        }
+      });
       AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data));
     });
 }

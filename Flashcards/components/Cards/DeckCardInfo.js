@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { black, white, gray } from '../../utils/colors';
 
-export default class DeckCardInfo extends Component {
+export class DeckCardInfo extends Component {
   static navigationOptions = ({ navigation }) => {
     const { deck } = navigation.state.params
     return {
-      title: deck.title
+      title: deck.title,
     }
   }
 
@@ -23,7 +24,8 @@ export default class DeckCardInfo extends Component {
   }
 
   render() {
-    const { deck } = this.props.navigation.state.params
+    // const { deck } = this.props.navigation.state.params
+    const deck = this.props.deckList.find((deck) => deck.title === this.props.navigation.state.params.deck.title)
     return (
       <View style={styles.infoCard}>
         {deck &&
@@ -99,3 +101,14 @@ const styles = StyleSheet.create({
     height: 40,
   },
 })
+
+
+function mapStateToProps (deckList) {
+  return {
+    deckList
+  }
+}
+
+export default connect(
+  mapStateToProps,
+)(DeckCardInfo)

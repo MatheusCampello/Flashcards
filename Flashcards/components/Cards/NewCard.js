@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { KeyboardAvoidingView, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 import { black, white } from '../../utils/colors';
+import { addCard } from '../../actions';
+import { addCardToDeck } from '../../utils/api';
 
-export default class NewCard extends Component {
+export class NewCard extends Component {
   static navigationOptions = ({ navigation }) => {
-    // const { deck } = navigation.state.params USAR ISSO AQUE
     return {
       title: 'Add Card'
     }
@@ -22,32 +23,36 @@ export default class NewCard extends Component {
 
   submitCard = () => {
     const { question, answer } = this.state;
-    const { deckTitle } = navigation.state.params;
+    const { deckTitle } =   this.props.navigation.state.params;
     const newCard = {
       question,
       answer
     };
     //update redux
-    // this.props.dispatch(addDeck(newDeck));
+    this.props.dispatch(addCard(deckTitle, newCard));
+    // addCard(deckTitle, newCard);
     addCardToDeck(deckTitle, newCard)
       .then(() => {
-        this.props.navigation.navigate(
-          'DeckCardInfo'
-        );
+        this.props.navigation.goBack()
       });
+    // this.props.navigation.navigate(
+    //   'DeckCardInfo',
+    //   { deck: { title: "Teste", questions: [] } }
+    // )
   }
 
   render() {
     return(
       <KeyboardAvoidingView behaviour='padding' style={styles.container}>
+        <Text>{this.props.navigation.state.params.deckTitle}</Text>
         <TextInput
-          style={{borderColor: black, borderWidth: 1, width: '70%', borderRadius: 5}}
+          style={styles.text}
           onChangeText={(question) => this.setState({question})}
           value={this.state.question}
           placeholder='Question'
         />
         <TextInput
-          style={{borderColor: black, borderWidth: 1, width: '70%', borderRadius: 5}}
+          style={styles.text}
           onChangeText={(answer) => this.setState({answer})}
           value={this.state.answer}
           placeholder='Answer'
@@ -70,10 +75,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   text: {
-    fontSize: 49,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#757575'
+    marginTop: 20,
+    borderColor: black,
+    borderWidth: 1,
+    width: '70%',
+    borderRadius: 5
   },
   button: {
     padding: 10,
@@ -87,3 +93,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+function mapStateToProps (deckList) {
+  return {
+    deckList
+  }
+}
+
+export default connect(
+  mapStateToProps,
+)(NewCard)
