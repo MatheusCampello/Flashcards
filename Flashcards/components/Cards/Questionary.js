@@ -3,11 +3,17 @@ import { connect } from 'react-redux';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { black, white, gray } from '../../utils/colors';
 
-export class DeckCardInfo extends Component {
+export class Questionary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      correctAnswers: 0
+    };
+  }
+
   static navigationOptions = ({ navigation }) => {
-    const { deck } = navigation.state.params
     return {
-      title: deck.title,
+      title: 'Quiz',
     }
   }
 
@@ -16,40 +22,33 @@ export class DeckCardInfo extends Component {
   }
 
   navigateNewCard(navigation) {
-    const { deck } = navigation.state.params;
-    navigation.navigate(
-      'NewCard',
-      { deckTitle: deck.title}
-    );
-  }
-
-  navigateQuestionary(navigation) {
-    const { deck } = navigation.state.params;
-    navigation.navigate(
-      'Questionary',
-      { cards: deck.questions }
-    );
+    const { cards } = navigation.state.params
   }
 
   render() {
-    // const { deck } = this.props.navigation.state.params
-    const deck = this.props.deckList.find((deck) => deck.title === this.props.navigation.state.params.deck.title)
+    const { correctAnswers } = this.state
+    const { cards } = this.props.navigation.state.params
     return (
       <View style={styles.infoCard}>
-        {deck &&
-          <View>
-            <Text style={styles.mainText}> {deck.title} </Text>
-            {deck.questions.length > 0
-              ? <Text style={styles.subText}> {deck.questions.length} {deck.questions.length === 1 ? 'card' : 'cards'} </Text>
-              : <Text style={styles.subText}> No Cards Yet </Text>
-            }
-            <TouchableOpacity style={styles.buttonAdd} onPress={() => this.navigateNewCard(this.props.navigation)}>
-              <Text style={{color: black, alignSelf: 'center'}}>Add Card</Text>
+        { cards.map((card, index) => {
+          <View key={card.question}>
+            <Text>{index}/{cards.length}</Text>
+            <Text>{cards.question}</Text>
+            <TouchableOpacity>
+              <Text>Answer</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonQuiz}>
-              <Text style={{color: white, alignSelf: 'center'}}>Start Quiz</Text>
+            <TouchableOpacity>
+              <Text>Question</Text>
             </TouchableOpacity>
+            <TouchableOpacity>
+              <Text>Correct</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text>Incorrect</Text>
+            </TouchableOpacity>
+            <Text>You answered correct {correctAnswers} from {cards.length} questions.</Text>
           </View>
+        })
         }
       </View>
     );
@@ -119,4 +118,4 @@ function mapStateToProps (deckList) {
 
 export default connect(
   mapStateToProps,
-)(DeckCardInfo)
+)(Questionary)
