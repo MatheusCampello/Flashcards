@@ -7,7 +7,9 @@ export class Questionary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      correctAnswers: 0
+      correctAnswers: 0,
+      isQuestion: true,
+      endOfQuiz: false,
     };
   }
 
@@ -33,20 +35,33 @@ export class Questionary extends Component {
         { cards.map((card, index) => {
           <View key={card.question}>
             <Text>{index}/{cards.length}</Text>
-            <Text>{cards.question}</Text>
-            <TouchableOpacity>
-              <Text>Answer</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text>Question</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text>Correct</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text>Incorrect</Text>
-            </TouchableOpacity>
-            <Text>You answered correct {correctAnswers} from {cards.length} questions.</Text>
+            {!endOfQuiz && isQuestion
+              ?
+              <View>
+                <Text>{cards.question}</Text>
+                <TouchableOpacity>
+                  <Text>Answer</Text>
+                </TouchableOpacity>
+              </View>
+              :
+              <View>
+                <Text>{cards.answer}</Text>
+                <TouchableOpacity>
+                  <Text>Question</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text>Correct</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text>Incorrect</Text>
+                </TouchableOpacity>
+              </View>
+            }
+            {endOfQuiz &&
+              <View>
+                <Text>You answered correct {correctAnswers} from {cards.length} questions.</Text>
+              </View>
+            }
           </View>
         })
         }
