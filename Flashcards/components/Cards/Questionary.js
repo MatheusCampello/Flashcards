@@ -7,10 +7,13 @@ export class Questionary extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      index: 0,
       correctAnswers: 0,
       isQuestion: true,
       endOfQuiz: false,
     };
+    this.correctAnswer = this.correctAnswer.bind(this);
+    this.incorrectAnswer = this.incorrectAnswer.bind(this);
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -27,44 +30,79 @@ export class Questionary extends Component {
     const { cards } = navigation.state.params
   }
 
+  correctAnswer() {
+    const { cards } = this.props.navigation.state.params;
+    const nextCard = this.state.index + 1;
+
+    if (nextCard > cards.length) {
+      this.setState({
+        endOfQuiz: true,
+        correctAnswers: this.state.correctAnswers + 1,
+        index: 0
+      })
+    } else {
+      this.setState({
+        correctAnswers: this.state.correctAnswers + 1,
+        isQuestion: true,
+        index: nextCard
+      })
+    }
+  }
+
+  incorrectAnswer() {
+    const { cards } = this.props.navigation.state.params;
+    const nextCard = this.state.index + 1;
+
+    if (nextCard > cards.length) {
+      this.setState({
+        endOfQuiz: true,
+        index: 0
+      })
+    } else {
+      this.setState({
+        isQuestion: true,
+        index: nextCard
+      })
+    }
+
+  }
+
   render() {
-    const { correctAnswers } = this.state
-    const { cards } = this.props.navigation.state.params
+    const { correctAnswers, index } = this.state;
+    const { cards } = this.props.navigation.state.params;
+    const currentCard = cards[index];
     return (
       <View style={styles.infoCard}>
-        { cards.map((card, index) => {
-          <View key={card.question}>
-            <Text>{index}/{cards.length}</Text>
-            {!endOfQuiz && isQuestion
-              ?
-              <View>
-                <Text>{cards.question}</Text>
-                <TouchableOpacity>
-                  <Text>Answer</Text>
-                </TouchableOpacity>
-              </View>
-              :
-              <View>
-                <Text>{cards.answer}</Text>
-                <TouchableOpacity>
-                  <Text>Question</Text>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Text>Correct</Text>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Text>Incorrect</Text>
-                </TouchableOpacity>
-              </View>
-            }
-            {endOfQuiz &&
-              <View>
-                <Text>You answered correct {correctAnswers} from {cards.length} questions.</Text>
-              </View>
-            }
-          </View>
-        })
-        }
+        <View>
+          <Text>{index}/{cards.length}</Text>
+          {!endOfQuiz && isQuestion
+            ?
+            <View>
+              <Text>{currentCard.question}</Text>
+              <TouchableOpacity onPress={() => this.setState({isQuestion: false})}>
+                <Text>Answer</Text>
+              </TouchableOpacity>
+            </View>
+            :
+            <View>
+              <Text>{currentCard.answer}</Text>
+              <TouchableOpacity onPress={() => this.setState({isQuestion: true})}>
+                <Text>Question</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.correctAnswer}>
+                <Text>Correct</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.incorrectAnswer}>
+                <Text>Incorrect</Text>
+              </TouchableOpacity>
+            </View>
+          }
+          {endOfQuiz &&
+            <View>
+              <Text>You answered correct {correctAnswers} from {currentCard.length} questions.</Text>
+            </View>
+          }
+        </View>
       </View>
     );
   }
