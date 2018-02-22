@@ -29,7 +29,6 @@ export class DeckList extends Component {
   }
 
   renderItem = ({ item }) => {
-    // return <DeckDetails deck={item} navigation={this.props.navigation} />
     return <DeckDetails deck={item} onPress={this.openDeck} />
   }
 

@@ -46,7 +46,7 @@ export class DeckCardInfo extends Component {
             <TouchableOpacity style={styles.buttonAdd} onPress={() => this.navigateNewCard(this.props.navigation)}>
               <Text style={{color: black, alignSelf: 'center'}}>Add Card</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonQuiz}>
+            <TouchableOpacity style={styles.buttonQuiz} onPress={() => this.navigateQuestionary(this.props.navigation)}>
               <Text style={{color: white, alignSelf: 'center'}}>Start Quiz</Text>
             </TouchableOpacity>
           </View>
