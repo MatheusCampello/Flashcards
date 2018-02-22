@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Text, TouchableOpacity, View, StyleSheet, Animated } from 'react-native';
 import { black, white, green, red } from '../../utils/colors';
+import { clearLocalNotification, setLocalNotification } from '../../utils/helpers';
 
 export class Questionary extends Component {
   constructor(props) {
@@ -38,6 +39,8 @@ export class Questionary extends Component {
     const nextCard = this.state.index + 1;
 
     if (nextCard === cards.length) {
+      clearLocalNotification()
+        .then(setLocalNotification)
       this.setState({
         endOfQuiz: true,
         correctAnswers: this.state.correctAnswers + 1,
@@ -57,6 +60,8 @@ export class Questionary extends Component {
     const nextCard = this.state.index + 1;
 
     if (nextCard === cards.length) {
+      clearLocalNotification()
+        .then(setLocalNotification)
       this.setState({
         endOfQuiz: true,
         index: 0
@@ -175,7 +180,6 @@ const styles = StyleSheet.create({
   },
   buttonCorrect: {
     justifyContent: 'flex-end',
-    marginTop: '50%',
     padding: 10,
     backgroundColor: green,
     alignSelf: 'center',
