@@ -23,8 +23,13 @@ export function loadDecks() {
   return dispatch => {
     getDecks()
       .then(decks => {
-        const de = JSON.parse(decks)
-        dispatch(loadDecksSuccess(de))
+        if(!decks) {
+          const de = []
+          dispatch(loadDecksSuccess(de))
+        } else {
+          const de = JSON.parse(decks)
+          dispatch(loadDecksSuccess(de))
+        }
       })
   }
 }

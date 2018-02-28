@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Platform, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { TabNavigator, StackNavigator } from 'react-navigation';
-import { white, black } from './utils/colors';
+import { white, black, gray } from './utils/colors';
 import { Constants } from 'expo'
 import { createStore } from 'redux';
 import reducer from './reducers';
@@ -41,6 +41,7 @@ const Tabs = TabNavigator({
   },
   tabBarOptions: {
     activeTintColor: black,
+    inactiveTintColor: gray,
     style: {
       height: 56,
       backgroundColor: white,

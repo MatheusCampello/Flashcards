@@ -38,10 +38,17 @@ export function getDeck(title) {
 export function saveDeckTitle (newDeck) {
   return AsyncStorage.getItem(flashcards)
     .then((results) => {
-      let data = JSON.parse(results);
-      if (data.find(el => {return el.title === newDeck.title}) === undefined) {
-        data.push(newDeck)
-        AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data))
+      if(!results){
+        //If it is the first time adding a Deck
+        let data = [];
+        data.push(newDeck);
+        AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data));
+      } else {
+        let data = JSON.parse(results);
+        if (data.find(el => {return el.title === newDeck.title}) === undefined) {
+          data.push(newDeck)
+          AsyncStorage.setItem('Flashcards:deck', JSON.stringify(data))
+        }
       }
     });
 }
